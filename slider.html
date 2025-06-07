@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Before After Slider</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 800px;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .slider-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .slider-container .after-image {
+      clip-path: inset(0 50% 0 0);
+      transition: clip-path 0.2s;
+    }
+
+    .slider-handle {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background: white;
+      cursor: ew-resize;
+      z-index: 10;
+    }
+
+    .slider-handle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="slider-container" id="slider">
+    <img src="before.png" alt="Before">
+    <img src="after.png" class="after-image" alt="After" id="afterImg">
+    <div class="slider-handle" id="handle"></div>
+  </div>
+
+  <script>
+    const slider = document.getElementById('slider');
+    const handle = document.getElementById('handle');
+    const afterImg = document.getElementById('afterImg');
+
+    slider.addEventListener('mousemove', (e) => {
+      const rect = slider.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const percent = offsetX / rect.width * 100;
+
+      handle.style.left = `${percent}%`;
+      afterImg.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+    });
+  </script>
+</body>
+</html>
